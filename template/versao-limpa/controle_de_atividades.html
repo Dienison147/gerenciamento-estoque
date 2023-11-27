@@ -1,62 +1,183 @@
 <!DOCTYPE html>
-<html lang="pt">
+<html dir="ltr" lang="pt-BR">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Controle de Atividades</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>:: Lista de Tarefas ::</title>
+    <link href="{{ url_for('static', filename='dist/css/style.min.css') }}" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.6/css/jquery.dataTables.min.css">
+    
 
-    <style>
-        .container {
-            display: flex;
-        }
-
-        .column {
-            flex: 1;
-            margin: 10px;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-        }
-
-        .task {
-            background: #f9f9f9;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            padding: 5px;
-            margin: 5px 0;
-        }
-    </style>
+    {% block css %}{% endblock %}
 </head>
 
 <body>
 
-    <h2>Status de Atividades</h2>
-
-    <div class="container">
-        <div class="column">
-            <h3>A fazer</h3>
-            <div class="task">Tarefa 1</div>
-            <div class="task">Tarefa 2</div>
-            <div class="task">Tarefa 3</div>
-        </div>
-        <div class="column">
-            <h3>Em andamento</h3>
-            <div class="task">Tarefa 4</div>
-            <div class="task">Tarefa 5</div>
-        </div>
-        <div class="column">
-            <h3>Concluído</h3>
-            <div class="task">Tarefa 6</div>
-            <div class="task">Tarefa 7</div>
-            <div class="task">Tarefa 8</div>
-        </div>
-        <div class="column">
-            <h3>Controle de Tarefas</h3>
-            <div class="task">Máximo - Quantidade: 10</div>
-            <div class="task">Em execução - Quantidade: 5</div>
-            <div class="task">Total - Quantidade: 8</div>
+    <div class="preloader">
+        <div class="lds-ripple">
+            <div class="lds-pos"></div>
+            <div class="lds-pos"></div>
         </div>
     </div>
+
+    <div id="main-wrapper">
+
+        <header class="topbar" data-navbarbg="skin5">
+            <nav class="navbar top-navbar navbar-expand-md navbar-dark">
+                <div class="navbar-header" data-logobg="skin5">
+
+                    <a class="nav-toggler waves-effect waves-light d-block d-md-none" href="javascript:void(0)"><i
+                            class="ti-menu ti-close"></i></a>
+
+                    <a class="navbar-brand" href="dashboard.html">
+                        <b class="logo-icon p-l-10">
+                            <img src="Icons/png/caixa.png" alt="Ícone PNG" style="width: 30%;"> ESTOQUE
+                        </b>
+                    </a>
+
+                    <a class="topbartoggler d-block d-md-none waves-effect waves-light" href="javascript:void(0)"
+                        data-toggle="collapse" data-target="#navbarSupportedContent"
+                        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><i
+                            class="ti-more"></i></a>
+
+                </div>
+
+                <div class="navbar-collapse collapse" id="navbarSupportedContent" data-navbarbg="skin5">
+
+                    <ul class="navbar-nav float-left mr-auto">
+
+                    </ul>
+
+                    <ul class="navbar-nav float-right">
+
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle text-muted waves-effect waves-dark pro-pic" href=""
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img
+                                    src="assets/images/users/1.jpg" alt="user" class="rounded-circle" width="31"></a>
+                            <div class="dropdown-menu dropdown-menu-right user-dd animated">
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="javascript:void(0)"><i
+                                        class="ti-settings m-r-5 m-l-5"></i> Configurações da Conta</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="index.html"><i class="fa fa-power-off m-r-5 m-l-5"></i>
+                                    Sair</a>
+
+                            </div>
+                        </li>
+
+                    </ul>
+                </div>
+            </nav>
+        </header>
+
+        <aside class="left-sidebar" data-sidebarbg="skin5">
+
+            <div class="scroll-sidebar">
+                <nav class="sidebar-nav">
+
+                    <ul id="sidebarnav" class="p-t-30">
+
+                        <li class="sidebar-item">
+                            <a class="sidebar-link waves-effect waves-dark sidebar-link" href="dashboard.html"
+                                aria-expanded="false">
+                                <i class="mdi mdi-view-dashboard"></i>
+                                <span class="hide-menu">Dashboard</span>
+                            </a>
+                        </li>
+
+                        <li class="sidebar-item">
+                            <a class="sidebar-link waves-effect waves-dark sidebar-link" href="clientes.html"
+                                aria-expanded="false">
+                                <i class="mdi mdi-account"></i>
+                                <span class="hide-menu">Clientes</span>
+                            </a>
+                        </li>
+
+                        <li class="sidebar-item">
+                            <a class="sidebar-link waves-effect waves-dark sidebar-link" href="produtos.html"
+                                aria-expanded="false">
+                                <i class="mdi mdi-package"></i>
+                                <span class="hide-menu">Produtos</span>
+                            </a>
+                        </li>
+
+                    </ul>
+                </nav>
+            </div>
+        </aside>
+
+        <div class="page-wrapper">
+
+
+            <div class="container-fluid">
+                <h2>Título da página</h2>
+                <div class="text-center">
+                    <h1 class="titulo">Lista de Atividades</h1>
+                </div>
+
+                <!-- Button trigger modal -->
+                <button type="button" class="btn btn-primary position-absolute top-50 end-50" data-bs-toggle="modal"
+                    data-bs-target="#exampleModal">
+                    Abrir Quadro de Tarefas
+                </button>
+
+                <!-- Modal -->
+                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Listas de Tarefas</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form action="/tarefas.cad_tarefas" methods="post">
+                                    <label>Tarefa:</label>
+                                    <input type="text" name="tarefa" id=""><br>
+
+                                    <label for="status">Tipo:</label>
+                                    <select name="status" class="form-control" id="idstatus">
+                                        <option value="ini">iniciar</option>
+                                        <option value="anda">andamento</option>
+                                        <option value="final">finalizado</option>
+                                    </select>
+
+                                </form>
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                                <button type="button" class="btn btn-primary">Salvar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <footer class="footer text-center">
+                Todos os direitos reservados para a turma DS 2023.2 ETEAVS ❤.
+            </footer>
+
+        </div>
+    </div>
+
+    <script src="assets/libs/jquery/dist/jquery.min.js"></script>
+    <script src="dist/js/jquery.ui.touch-punch-improved.js"></script>
+    <script src="dist/js/jquery-ui.min.js"></script>
+    <script src="assets/libs/popper.js/dist/umd/popper.min.js"></script>
+    <script src="assets/libs/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="assets/libs/perfect-scrollbar/dist/perfect-scrollbar.jquery.min.js"></script>
+    <script src="assets/extra-libs/sparkline/sparkline.js"></script>
+    <script src="dist/js/waves.js"></script>
+    <script src="dist/js/sidebarmenu.js"></script>
+    <script src="dist/js/custom.min.js"></script>
+    <script src="assets/libs/moment/min/moment.min.js"></script>
 
 </body>
 
